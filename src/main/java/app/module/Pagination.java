@@ -15,12 +15,12 @@ public class Pagination {
   private int numberOfElements = 10;
 
   private int totalPage;
-  private int totalElement;
+  private long totalElement;
 
   private int start, offset, end;
   private boolean first, prev, next, last;
 
-  public Pagination paging(int offset, int totalElement) {
+  public Pagination paging(int offset, Long totalElement) {
     this.offset = offset;
     this.totalElement = totalElement;
 
