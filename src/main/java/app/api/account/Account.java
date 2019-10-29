@@ -1,10 +1,9 @@
 package app.api.account;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -18,8 +17,8 @@ import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import app.embedded.EmbeddedDate;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +27,6 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Builder
 @EqualsAndHashCode(of = "idx")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -55,6 +53,6 @@ public class Account {
   @Pattern(regexp = "\\S{4,8}", message = "닉네임을 4~8자로 입력해주세요.")
   private String nickname;
 
-  private LocalDate createAt;
-  private LocalDate modifyAt;
+  @Embedded
+  EmbeddedDate embeddedDate;
 }
