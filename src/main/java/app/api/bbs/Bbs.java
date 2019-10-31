@@ -1,16 +1,10 @@
 package app.api.bbs;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.lang.Nullable;
 
 import app.embedded.EmbeddedDate;
 import lombok.AllArgsConstructor;
