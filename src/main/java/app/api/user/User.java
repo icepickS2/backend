@@ -6,7 +6,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,6 +24,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import app.embedded.EmbeddedDate;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -31,64 +34,19 @@ import lombok.NoArgsConstructor;
 @Table(name = "USERS")
 @NoArgsConstructor
 @EqualsAndHashCode(of = "idx")
-public class User implements OAuth2User, UserDetails {
+public class User{
 
-	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue
 	protected Long idx;
-
 	private String email;
 	private String password;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Enumerated(EnumType.STRING)
+	@Column(name="roles")
 	private Set<Role> role;
 
-	@CreationTimestamp
-	protected LocalDateTime createdAt;
-
-	@UpdateTimestamp
-	protected LocalDateTime updatedAt;
-
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return role.stream().map(r -> new SimpleGrantedAuthority("ROLE_" + r.name())).collect(Collectors.toSet());
-	}
-
-	@Override
-	public Map<String, Object> getAttributes() {
-		return null;
-	}
-
-	@Override
-	public String getName() {
-		return String.valueOf(idx);
-	}
-
-	@Override
-	public String getUsername() {
-		return email;
-	}
-
+	@Embedded
+	private EmbeddedDate date;
 }

@@ -17,33 +17,9 @@ import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  @Autowired
-  PasswordEncoder passwordEncoder;
-
-  @Autowired
-  UserDetailsService userService;
-
-  @Bean
-  @Override
-  public AuthenticationManager authenticationManagerBean() throws Exception {
-    return super.authenticationManagerBean();
-  }
-
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
-  }
-
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    // http.csrf().disable();
-    // http.anonymous().disable();
-    // http.authorizeRequests().antMatchers("/").permitAll();
-    // TokenEndpoint
-    http.csrf().disable().exceptionHandling()
-        .authenticationEntryPoint(
-            (request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
-        .and().authorizeRequests().antMatchers("/**").authenticated().and().httpBasic();
+    http.authorizeRequests().antMatchers("/**").permitAll();
   }
 
   @Override

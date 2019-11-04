@@ -1,6 +1,8 @@
 package app.embedded;
 
-import java.time.LocalDateTime;
+
+
+import java.util.Date;
 
 import javax.persistence.Embeddable;
 
@@ -19,7 +21,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class EmbeddedDate {
   @CreatedDate
-  private LocalDateTime createAt;
+  private Date createAt;
   @LastModifiedDate
-  private LocalDateTime modifyAt;
+  private Date modifyAt;
 }
