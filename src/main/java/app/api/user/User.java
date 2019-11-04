@@ -1,6 +1,14 @@
 package app.api.user;
 
+<<<<<<< HEAD
 import java.util.Set;
+=======
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+>>>>>>> origin/master
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -13,6 +21,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+<<<<<<< HEAD
+=======
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+
+>>>>>>> origin/master
 import app.embedded.EmbeddedDate;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
