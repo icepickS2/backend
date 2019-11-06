@@ -1,7 +1,5 @@
 package app.embedded;
 
-
-
 import java.util.Date;
 
 import javax.persistence.Embeddable;

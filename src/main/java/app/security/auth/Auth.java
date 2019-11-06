@@ -16,8 +16,14 @@ public class Auth extends org.springframework.security.core.userdetails.User imp
   private Map<String, Object> attributes;
 
   public Auth(User user) {
-    super(user.getEmail(), user.getPassword(),
-        user.getRole().stream().map(r -> new SimpleGrantedAuthority("ROLE_" + r.name())).collect(Collectors.toSet()));
+    //@formatter:off
+    super(user.getEmail(), 
+          user.getPassword(),
+          user.getRole().stream().map(
+            r -> new SimpleGrantedAuthority("ROLE_" + r.name())).collect(
+              Collectors.toSet()));
+    //@formatter:on
+    
     this.user = user;
   }
 

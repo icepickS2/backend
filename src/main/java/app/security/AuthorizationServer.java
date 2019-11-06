@@ -12,13 +12,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.ClientDetails;
-import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
-import org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint;
-import org.springframework.security.oauth2.provider.endpoint.CheckTokenEndpoint;
-import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+
+import app.security.oauth2.RequestFactory;
 
 @Configuration
 @EnableAuthorizationServer
@@ -26,7 +23,6 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
 
   @Autowired
   private DataSource dataSource;
-
   @Autowired
   private PasswordEncoder passwordEncoder;
 
@@ -42,11 +38,16 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
   @Autowired
   private JwtAccessTokenConverter jwtAccessTokenConverter;
 
+  @Autowired
+  RequestFactory requestFactory;
+
   @Override
   public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-    //JdbcClientDetailsService
+    // JdbcClientDetailsService
     // ClientDetails
-    clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
+    // clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
+    clients.inMemory().withClient("clientapp").secret("123456").scopes("read_profile").authorizedGrantTypes("password",
+        "authorization_code", "refresh_token");
   }
 
   @Override
@@ -59,11 +60,12 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     //@formatter:off
     endpoints.tokenStore(tokenStore).tokenEnhancer(jwtAccessTokenConverter);
     endpoints.authenticationManager(authenticationManager).userDetailsService(userService);
+    endpoints.requestFactory(requestFactory);
     //@formatter:on
 
-    //AuthorizationEndpoint
-    //CheckTokenEndpoint
-    //TokenEndpoint
+    // AuthorizationEndpoint
+    // CheckTokenEndpoint
+    // TokenEndpoint
 
   }
 
