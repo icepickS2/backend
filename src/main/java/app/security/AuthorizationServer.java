@@ -12,6 +12,11 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.endpoint.AuthorizationEndpoint;
+import org.springframework.security.oauth2.provider.endpoint.CheckTokenEndpoint;
+import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
@@ -39,6 +44,8 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
 
   @Override
   public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+    //JdbcClientDetailsService
+    // ClientDetails
     clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
   }
 
@@ -49,8 +56,14 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
 
   @Override
   public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    //@formatter:off
     endpoints.tokenStore(tokenStore).tokenEnhancer(jwtAccessTokenConverter);
     endpoints.authenticationManager(authenticationManager).userDetailsService(userService);
+    //@formatter:on
+
+    //AuthorizationEndpoint
+    //CheckTokenEndpoint
+    //TokenEndpoint
 
   }
 
