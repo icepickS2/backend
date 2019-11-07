@@ -3,6 +3,7 @@ package app.security;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,6 +13,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.OAuth2RequestFactory;
+import org.springframework.security.oauth2.provider.endpoint.TokenEndpointAuthenticationFilter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
@@ -19,6 +23,7 @@ import app.security.oauth2.RequestFactory;
 
 @Configuration
 @EnableAuthorizationServer
+@SuppressWarnings("all")
 public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
 
   @Autowired
@@ -33,6 +38,9 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
   private UserDetailsService userService;
 
   @Autowired
+  private ClientDetailsService clientDetailsService;
+
+  @Autowired
   private TokenStore tokenStore;
 
   @Autowired
@@ -41,13 +49,36 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
   @Autowired
   RequestFactory requestFactory;
 
+  @Bean
+  public OAuth2RequestFactory getRequestFactory() {
+    RequestFactory requestFactory = new RequestFactory(clientDetailsService);
+    requestFactory.setCheckUserScopes(true);
+    return requestFactory;
+  }
+
+  @Bean
+  public TokenEndpointAuthenticationFilter tokenEndpointAuthenticationFilter() {
+    return new TokenEndpointAuthenticationFilter(authenticationManager, getRequestFactory());
+  }
+
   @Override
   public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
     // JdbcClientDetailsService
     // ClientDetails
     // clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
-    clients.inMemory().withClient("clientapp").secret("123456").scopes("read_profile").authorizedGrantTypes("password",
-        "authorization_code", "refresh_token");
+    //@formatter:off
+    clients.inMemory()
+    .withClient("icepick")
+    // .secret(passwordEncoder.encode("123456"))
+    .secret("icepick")
+    .authorizedGrantTypes("authorization_code", "password", "client_credentials", "implicit", "refresh_token")
+    .scopes("read", "write")
+    .authorities("client")
+    .accessTokenValiditySeconds(3600) // 1 hour
+    .refreshTokenValiditySeconds(2592000)
+    ; // 30 days
+    // System.out.println(clients);
+    //@formatter:on
   }
 
   @Override

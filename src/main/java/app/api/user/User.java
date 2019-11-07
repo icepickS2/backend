@@ -1,5 +1,6 @@
 package app.api.user;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -37,7 +38,7 @@ public class User {
 	@ElementCollection(fetch = FetchType.EAGER)
 	@Enumerated(EnumType.STRING)
 	@Column(name = "roles")
-	private Set<Role> role;
+	private Set<Role> role = new HashSet<Role>();
 
 	@Enumerated(EnumType.STRING)
 	private Platform platform;

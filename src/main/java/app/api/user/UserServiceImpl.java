@@ -4,16 +4,30 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import app.util.Msg;
+
+@Service
+@Transactional
 public class UserServiceImpl implements UserService {
+
+  @Autowired
+  UserRepository userRepository;
 
   @Autowired
   PasswordEncoder passwordEncoder;
 
+  @Autowired
+  Msg map;
+
   @Override
   public Map<String, Object> create(User user) {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
-    return null;
+    User user2 = userRepository.save(user);
+    map.put("user", user2);
+    return map;
   }
 
   @Override
@@ -37,5 +51,4 @@ public class UserServiceImpl implements UserService {
     return null;
   }
 
-  
 }
