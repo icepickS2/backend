@@ -21,9 +21,4 @@ public class AuthServiceImpl implements AuthService {
     User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(""));
     return new Auth(user);
   }
-
-  public UserDetails loadUserByIdx(Long idx) throws UsernameNotFoundException {
-    User user = userRepository.findById(idx).orElseThrow();
-    return new Auth(user);
-  }
 }

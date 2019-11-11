@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MessageController {
 
-  @PostMapping
-  @SendTo()
+  // @PostMapping
+  // @SendTo()
   public void name() {
 
   }

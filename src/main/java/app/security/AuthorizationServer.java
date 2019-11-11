@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.OAuth2RequestFactory;
+import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpointAuthenticationFilter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
@@ -44,6 +45,9 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
   private TokenStore tokenStore;
 
   @Autowired
+  private ApprovalStore approvalStore;
+
+  @Autowired
   private JwtAccessTokenConverter jwtAccessTokenConverter;
 
   @Autowired
@@ -67,18 +71,18 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     // ClientDetails
     // clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
     //@formatter:off
-    clients.inMemory()
-    .withClient("icepick")
-    // .secret(passwordEncoder.encode("123456"))
-    .secret("icepick")
-    .authorizedGrantTypes("authorization_code", "password", "client_credentials", "implicit", "refresh_token")
-    .scopes("read", "write")
-    .authorities("client")
-    .accessTokenValiditySeconds(3600) // 1 hour
-    .refreshTokenValiditySeconds(2592000)
-    ; // 30 days
+    // clients.inMemory()
+    // .withClient("icepick")
+    // .secret("icepick")
+    // .authorizedGrantTypes("authorization_code", "password", "client_credentials", "implicit", "refresh_token")
+    // .scopes("read", "write")
+    // .authorities("client")
+    // .accessTokenValiditySeconds(3600) // 1 hour
+    // .refreshTokenValiditySeconds(2592000)
+    // ; // 30 days
     // System.out.println(clients);
     //@formatter:on
+    clients.withClientDetails(clientDetailsService);
   }
 
   @Override
@@ -91,9 +95,12 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     //@formatter:off
     endpoints.tokenStore(tokenStore).tokenEnhancer(jwtAccessTokenConverter);
     endpoints.authenticationManager(authenticationManager).userDetailsService(userService);
+    endpoints.approvalStore(approvalStore);
     endpoints.requestFactory(requestFactory);
+    endpoints.setClientDetailsService(clientDetailsService);
     //@formatter:on
-
+    System.out.println(endpoints);
+    // TokenEndpointAuthenticationFilter
     // AuthorizationEndpoint
     // CheckTokenEndpoint
     // TokenEndpoint

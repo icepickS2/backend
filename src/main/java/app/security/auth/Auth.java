@@ -23,7 +23,6 @@ public class Auth extends org.springframework.security.core.userdetails.User imp
             r -> new SimpleGrantedAuthority("ROLE_" + r.name())).collect(
               Collectors.toSet()));
     //@formatter:on
-    
     this.user = user;
   }
 

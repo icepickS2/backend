@@ -1,5 +1,7 @@
 package app.security;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -18,11 +21,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private UserDetailsService userDetailsService;
   @Autowired
   private PasswordEncoder passwordEncoder;
-
-  @Autowired
-  public void globalUserDetails(AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-  }
 
   @Bean
   @Override
@@ -35,11 +33,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
   }
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    // http.authorizeRequests().antMatchers("/**").permitAll();
-    http.csrf().disable().anonymous().disable().authorizeRequests().antMatchers("/api-docs/**").permitAll();
-  }
+	@Override
+	public void configure(HttpSecurity http) throws Exception {
+
+		http.authorizeRequests().antMatchers("/categorias").permitAll()
+		.anyRequest().authenticated().and()
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+		.csrf().disable();
+	}
+
+	
 
   @Override
   public void configure(WebSecurity web) {
