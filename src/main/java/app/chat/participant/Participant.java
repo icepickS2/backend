@@ -1,24 +1,38 @@
 package app.chat.participant;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
-import org.springframework.data.mongodb.core.mapping.Document;
-
+import javax.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import app.api.account.Account;
-import app.chat.room.Room;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import app.chat.room.ChatRoom;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@Builder
-@EqualsAndHashCode(of = "idx")
-@Document
+//@ Data 쓰니까 hashCode() 함수에서 순환참조남;;
+@Entity
+@Setter
+@Getter
 public class Participant {
   @Id
-  private Long idx;
-  
-  private Room room;
-  private Account user;
-  private String desc;
+  @GeneratedValue
+  private Long id;
+  @ManyToOne
+  private Account account;
+  @ManyToOne
+  private ChatRoom chatRoom;
+  @Enumerated(EnumType.STRING)
+  private Authority authority = Authority.ROLE_GUEST;
+
+  public enum Authority {
+    ROLE_HOST, ROLE_GUEST;
+  }
+
+  @JsonBackReference
+  public ChatRoom getChatRoom() {
+    return chatRoom;
+  }
 }

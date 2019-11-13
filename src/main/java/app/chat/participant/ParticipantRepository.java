@@ -1,8 +1,7 @@
 package app.chat.participant;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ParticipantRepository extends MongoRepository<Participant,Long>{
+public interface ParticipantRepository extends JpaRepository<Participant, Long>{
 
-  
 }
