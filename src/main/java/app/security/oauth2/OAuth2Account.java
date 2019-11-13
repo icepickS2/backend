@@ -2,10 +2,10 @@ package app.security.oauth2;
 
 import java.util.Map;
 
-public abstract class OAuth2UserInfo {
+public abstract class OAuth2Account {
     protected Map<String, Object> attributes;
 
-    public OAuth2UserInfo(Map<String, Object> attributes) {
+    public OAuth2Account(Map<String, Object> attributes) {
         this.attributes = attributes;
     }
 
