@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import app.api.user.User;
+import app.api.account.Account;
 import app.chat.msg.Msg;
 import app.chat.msg.MsgType;
 import app.chat.participant.Participant;
@@ -29,11 +29,11 @@ public class RoomServiceImpl implements RoomService {
   Message message;
   
 
-  public Message create(Room info,User user,List<User> invitees) {
+  public Message create(Room info,Account user,List<Account> invitees) {
     Room room=roomRepository.save(info);
     Participant host=Participant.builder().room(room).user(user).desc(ParticipantType.HOST.toString()).build();
     participantRepository.save(host);
-    for (User invitee : invitees) {
+    for (Account invitee : invitees) {
       Participant guest=Participant.builder().room(room).user(invitee).desc(ParticipantType.GUEST.toString()).build();
       participantRepository.save(guest);
     }
@@ -45,17 +45,17 @@ public class RoomServiceImpl implements RoomService {
   }
 
   @Override
-  public Message leave(Room info, User user) {
+  public Message leave(Room info, Account user) {
     return null;
   }
 
   @Override
-  public Message kick(Room info, User user) {
+  public Message kick(Room info, Account user) {
     return null;
   }
 
   @Override
-  public Message check(Room info, User user) {
+  public Message check(Room info, Account user) {
     return null;
   }
 }

@@ -1,4 +1,4 @@
-package app.api.user;
+package app.api.account;
 
 public enum Role {  
   USER,ADMIN

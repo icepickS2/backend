@@ -1,13 +1,11 @@
 {
-    "sqltools.connections": [
-        {
-            "database": "test",
-            "dialect": "PostgreSQL",
-            "name": "chat",
-            "password": "12341234",
-            "port": 5432,
-            "server": "postgres-db.c0hf7tw9ljrd.ap-northeast-2.rds.amazonaws.com",
-            "username": "root"
-        }
-    ]
+    "sqltools.connections": [{
+        "database": "dev",
+        "dialect": "PostgreSQL",
+        "name": "dev",
+        "password": "dev",
+        "port": 5432,
+        "server": "218.39.221.74",
+        "username": "dev"
+    }]
 }

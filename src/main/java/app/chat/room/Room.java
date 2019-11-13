@@ -4,7 +4,7 @@ import javax.persistence.Id;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import app.api.user.User;
+import app.api.account.Account;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,5 +22,5 @@ public class Room {
   private String desc;
   
 
-  private User user;
+  private Account user;
 }

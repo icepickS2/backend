@@ -1,6 +1,7 @@
 package app.security;
 
 import java.util.Arrays;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -15,18 +16,18 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
+import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import app.security.jwt.AccessTokenConverter;
-import app.security.oauth2.RequestFactory;
 
 @Configuration
 @EnableAuthorizationServer
-public class OAuthServer extends AuthorizationServerConfigurerAdapter{
+public class OAuthServer extends AuthorizationServerConfigurerAdapter {
 
   @Autowired
   private DataSource dataSource;
@@ -47,7 +48,7 @@ public class OAuthServer extends AuthorizationServerConfigurerAdapter{
   private JwtAccessTokenConverter accessTokenConverter;
 
   @Autowired
-  RequestFactory requestFactory;
+  private DefaultOAuth2RequestFactory defaultOAuth2RequestFactory;
 
   @Bean
   public JwtAccessTokenConverter jwtAccessTokenConverter() {
@@ -61,24 +62,26 @@ public class OAuthServer extends AuthorizationServerConfigurerAdapter{
   }
 
   @Override
-  public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-    security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
-  }
-
-  @Override
   public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
     clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
   }
 
   @Override
+  public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+    security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+  }
+
+  @Override
   public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
     TokenEnhancerChain tokenEnhancer = new TokenEnhancerChain();
-    tokenEnhancer.setTokenEnhancers(Arrays.asList(accessTokenConverter));
+    List<TokenEnhancer> list = Arrays.asList(accessTokenConverter);
+    tokenEnhancer.setTokenEnhancers(list);
 
     endpoints.tokenStore(tokenStore).accessTokenConverter(accessTokenConverter).tokenEnhancer(tokenEnhancer);
     endpoints.authenticationManager(authenticationManager);
     endpoints.userDetailsService(userDetailsService);
+    endpoints.requestFactory(defaultOAuth2RequestFactory);
 
-    // TokenEndpoint  
+    // TokenEndpoint
   }
 }

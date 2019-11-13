@@ -30,4 +30,8 @@ build/
 ### VS Code ###
 .vscode/
 
+<<<<<<< HEAD
 **/*.properties
+=======
+application-oauth2.properties
+>>>>>>> d0a19dff4904c7b36885019add97d2f51349a9d3
