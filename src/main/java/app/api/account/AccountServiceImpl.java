@@ -1,4 +1,4 @@
-package app.api.user;
+package app.api.account;
 
 import java.util.Map;
 
@@ -11,10 +11,10 @@ import app.config.Message;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService {
+public class AccountServiceImpl implements AccountService {
 
   @Autowired
-  UserRepository userRepository;
+  AccountRepository accountRepository;
 
   @Autowired
   PasswordEncoder passwordEncoder;
@@ -23,10 +23,9 @@ public class UserServiceImpl implements UserService {
   Message map;
 
   @Override
-  public Map<String, Object> create(User user) {
-    user.setPassword(passwordEncoder.encode(user.getPassword()));
-    User user2 = userRepository.save(user);
-    map.put("user", user2);
+  public Map<String, Object> create(Account account) {
+    account.setPassword(passwordEncoder.encode(account.getPassword()));
+    map.put("account", accountRepository.save(account));
     return map;
   }
 
@@ -41,7 +40,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Map<String, Object> update(User user, Long index) {
+  public Map<String, Object> update(Account user, Long index) {
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     return null;
   }

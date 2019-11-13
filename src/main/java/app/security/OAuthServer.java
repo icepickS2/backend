@@ -16,7 +16,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -24,7 +23,6 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import app.security.jwt.AccessTokenConverter;
-import app.security.oauth2.RequestFactory;
 
 @Configuration
 @EnableAuthorizationServer
@@ -47,9 +45,6 @@ public class OAuthServer extends AuthorizationServerConfigurerAdapter {
 
   @Autowired
   private JwtAccessTokenConverter accessTokenConverter;
-
-  @Autowired
-  RequestFactory requestFactory;
 
   @Bean
   public JwtAccessTokenConverter jwtAccessTokenConverter() {

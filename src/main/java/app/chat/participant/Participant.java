@@ -4,7 +4,7 @@ import javax.persistence.Id;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import app.api.user.User;
+import app.api.account.Account;
 import app.chat.room.Room;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +19,6 @@ public class Participant {
   private Long idx;
   
   private Room room;
-  private User user;
+  private Account user;
   private String desc;
 }

@@ -1,4 +1,4 @@
-package app.api.user;
+package app.api.account;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,8 +23,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "idx")
-@Entity(name = "users")
-public class User {
+@Entity
+public class Account {
 
   @Id
   @GeneratedValue
@@ -35,6 +35,7 @@ public class User {
   @ElementCollection(fetch = FetchType.EAGER)
   @Enumerated(EnumType.STRING)
   @Column(name = "roles")
+  @Builder.Default
   private Set<Role> roles = new HashSet<>();
 
   @Enumerated(EnumType.STRING)

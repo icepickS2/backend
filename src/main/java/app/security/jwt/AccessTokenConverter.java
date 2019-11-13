@@ -21,7 +21,7 @@ public class AccessTokenConverter extends JwtAccessTokenConverter {
   public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
     Sign sign = (Sign) authentication.getPrincipal();
     Map<String, Object> info = new HashMap<String, Object>(accessToken.getAdditionalInformation());
-    info.put("email", sign.getUser().getEmail());
+    info.put("email", sign.getAccount().getEmail());
 
     DefaultOAuth2AccessToken token = (DefaultOAuth2AccessToken) accessToken;
     token.setAdditionalInformation(info);
