@@ -3,6 +3,7 @@ package app.api.user;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -22,16 +23,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "idx")
-@Entity(name="users")
+@Entity(name = "users")
 public class User {
 
   @Id
   @GeneratedValue
   private Long idx;
-  private String email;  
+  private String email;
   private String password;
-  
+
   @ElementCollection(fetch = FetchType.EAGER)
-	@Enumerated(EnumType.STRING)
+  @Enumerated(EnumType.STRING)
+  @Column(name = "roles")
   private Set<Role> roles = new HashSet<>();
+
+  @Enumerated(EnumType.STRING)
+  private Platform platform;
+  private String platformToken;
 }

@@ -13,8 +13,8 @@ import app.security.sign.Sign;
 public class AccessTokenConverter extends JwtAccessTokenConverter {
 
   public AccessTokenConverter() {
-    
     super();
+    this.setSigningKey("key");
   }
 
   @Override

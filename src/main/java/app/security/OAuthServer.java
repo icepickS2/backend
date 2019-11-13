@@ -1,6 +1,7 @@
 package app.security;
 
 import java.util.Arrays;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -16,6 +17,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
@@ -26,7 +28,7 @@ import app.security.oauth2.RequestFactory;
 
 @Configuration
 @EnableAuthorizationServer
-public class OAuthServer extends AuthorizationServerConfigurerAdapter{
+public class OAuthServer extends AuthorizationServerConfigurerAdapter {
 
   @Autowired
   private DataSource dataSource;
@@ -61,24 +63,25 @@ public class OAuthServer extends AuthorizationServerConfigurerAdapter{
   }
 
   @Override
-  public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-    security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
-  }
-
-  @Override
   public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
     clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
   }
 
   @Override
+  public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+    security.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
+  }
+
+  @Override
   public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
     TokenEnhancerChain tokenEnhancer = new TokenEnhancerChain();
-    tokenEnhancer.setTokenEnhancers(Arrays.asList(accessTokenConverter));
+    List<TokenEnhancer> list = Arrays.asList(accessTokenConverter);
+    tokenEnhancer.setTokenEnhancers(list);
 
     endpoints.tokenStore(tokenStore).accessTokenConverter(accessTokenConverter).tokenEnhancer(tokenEnhancer);
     endpoints.authenticationManager(authenticationManager);
     endpoints.userDetailsService(userDetailsService);
 
-    // TokenEndpoint  
+    // TokenEndpoint
   }
 }
