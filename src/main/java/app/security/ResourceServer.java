@@ -2,7 +2,6 @@ package app.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
@@ -13,9 +12,9 @@ public class ResourceServer extends ResourceServerConfigurerAdapter {
 
   @Override
   public void configure(HttpSecurity http) throws Exception {
-
-    http.authorizeRequests().antMatchers("/categorias").permitAll().anyRequest().authenticated().and()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf().disable();
+    http.authorizeRequests().antMatchers("/**").permitAll();
+    // http.authorizeRequests().antMatchers("/categorias").permitAll().anyRequest().authenticated().and()
+    //     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().csrf().disable();
   }
 
   @Override

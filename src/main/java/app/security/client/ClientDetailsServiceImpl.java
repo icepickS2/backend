@@ -5,7 +5,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Primary;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientAlreadyExistsException;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
@@ -27,7 +26,6 @@ public class ClientDetailsServiceImpl extends JdbcClientDetailsService {
 
   public ClientDetailsServiceImpl(DataSource dataSource) {
     super(dataSource);
-    // TODO Auto-generated constructor stub
   }
 
   @Override
