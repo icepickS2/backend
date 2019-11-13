@@ -32,6 +32,9 @@ public class Account {
   private String email;
   private String password;
 
+  private String name;
+  private String imgUrl;
+
   @ElementCollection(fetch = FetchType.EAGER)
   @Enumerated(EnumType.STRING)
   @Column(name = "roles")

@@ -31,3 +31,4 @@ build/
 .vscode/
 
 *.properties
+application-oauth2.properties
