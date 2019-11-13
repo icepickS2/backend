@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import app.util.Msg;
+import app.config.Message;
 
 @Service
 @Transactional
@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
   PasswordEncoder passwordEncoder;
 
   @Autowired
-  Msg map;
+  Message map;
 
   @Override
   public Map<String, Object> create(User user) {
